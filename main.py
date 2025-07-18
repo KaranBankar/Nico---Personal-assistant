@@ -25,11 +25,6 @@ def init_engine():
         engine = pyttsx3.init('sapi5')  
         voices = engine.getProperty('voices')
         
-        print("Available voices:")
-        for i, voice in enumerate(voices):
-            print(f"{i}: {voice.name} (ID: {voice.id})")
-            logging.debug(f"Voice {i}: {voice.name} (ID: {voice.id})")
-        
         heera_voice = None
         for voice in voices:
             if "heera" in voice.name.lower():
@@ -41,9 +36,9 @@ def init_engine():
             print(f"Selected voice: Microsoft Heera")
             logging.debug("Selected voice: Microsoft Heera")
         else:
-            print("Warning: Microsoft Heera voice not found. Using default voice.")
+            #print("Warning: Microsoft Heera voice not found. Using default voice.")
             engine.setProperty('voice', voices[0].id)
-            print(f"Selected voice: {voices[0].name}")
+            #print(f"Selected voice: {voices[0].name}")
             logging.debug(f"Selected voice: {voices[0].name}")
         
         engine.setProperty('rate', 150)
@@ -64,7 +59,7 @@ def speak(text):
         return
     try:
         # Sanitize text and limit to 100 characters
-        text = ''.join(c for c in text if c.isprintable())[:100]
+        text = ''.join(c for c in text if c.isprintable())[:300]
         logging.debug("Engine state: Attempting to speak")
         engine.stop()
         engine.say(text)
@@ -140,7 +135,6 @@ def tell_about_karan():
 
 def run_kavya():
     try:
-        speak("Testing Nico's voice. Can you hear me, Karan Sir?")  # Startup test
         speak("Hello Karan Sir, I am Nico — your personal assistant. How can I help you today?")
         
         while True:
@@ -188,7 +182,7 @@ def run_kavya():
                     print(f"Error opening ChatGPT: {e}")
                     logging.error(f"Error opening ChatGPT: {e}")
 
-            elif "play video" in command:
+            elif "nico play video" in command:
                 speak("Playing a YouTube video for you, Karan Sir.")
                 video_url = "https://youtu.be/sUf2PtEZris?si=CQKBT36p6DzlRg29"
                 try:
@@ -207,18 +201,18 @@ def run_kavya():
                     print(f"Error: Project folder not found: {project_path}")
                     logging.error(f"Error: Project folder not found: {project_path}")
 
-            elif "what time" in command:
+            elif "nico what time" in command:
                 time_str = datetime.datetime.now().strftime('%I:%M %p')
                 speak(f"Karan Sir, the current time is {time_str}")
 
-            elif "what date" in command:
+            elif "nico what date" in command:
                 date = datetime.datetime.now().strftime('%d %B %Y')
                 speak(f"Karan Sir, today's date is {date}")
 
-            elif "who is karan" in command or "tell me about karan" in command:
+            elif "nico who is karan" in command or "nico tell me about karan" in command:
                 tell_about_karan()
 
-            elif "exit" in command:
+            elif "exit" in command or "by nico" in command:
                 speak("Goodbye Karan Sir. Nico is going offline.")
                 break
 
